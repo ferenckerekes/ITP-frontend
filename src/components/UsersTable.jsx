@@ -8,16 +8,23 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function UsersTable({ users }) {
+  const columns = [
+    { name: "Name", field: "fullName" },
+    { name: "Email", field: "email" },
+    { name: "Phone number", field: "phoneNumber" },
+    { name: "Country", field: "country" },
+    { name: "Role", field: "role" },
+    { name: "Registered At", field: "createdAt" },
+  ];
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Phone number</TableCell>
-            <TableCell>Country</TableCell>
-            <TableCell>Role</TableCell>
+            {columns.map((column) => (
+              <TableCell>{column.name}</TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -26,13 +33,9 @@ export default function UsersTable({ users }) {
               key={user.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {user.fullName}
-              </TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phoneNumber}</TableCell>
-              <TableCell>{user.country}</TableCell>
-              <TableCell>{user.role}</TableCell>
+              {columns.map((column) => (
+                <TableCell>{user[column.field]}</TableCell>
+              ))}
             </TableRow>
           ))}
         </TableBody>
