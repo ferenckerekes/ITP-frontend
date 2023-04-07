@@ -20,6 +20,7 @@ export default function UsersTable({ users, refresh }) {
   ];
 
   const [selectedUsers, setSelectedUsers] = useState([]);
+  //const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
 
   if (!users.length) {
     return null;
@@ -31,7 +32,7 @@ export default function UsersTable({ users, refresh }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
-            <TableRow>
+            <TableRow hover selected={users.length === selectedUsers.length}>
               <TableCell padding="checkbox">
                 <Checkbox
                   checked={users.length === selectedUsers.length}
@@ -56,6 +57,8 @@ export default function UsersTable({ users, refresh }) {
           <TableBody>
             {users.map((user) => (
               <TableRow
+                hover
+                selected={selectedUsers.includes(user.id)}
                 key={user.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
