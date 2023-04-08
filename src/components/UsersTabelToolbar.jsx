@@ -6,7 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
-export default function UsersTabelToolbar({ selectedUsers = [], refresh }) {
+import { useContext } from "react";
+import { UsersContext } from "./UsersProvider";
+
+export default function UsersTabelToolbar({ selectedUsers = [] }) {
+  const { refresh } = useContext(UsersContext);
+
   const deleteUserById = async (userId) => {
     try {
       await axios.delete(`http://localhost:3000/users/${userId}`);
@@ -36,9 +41,6 @@ export default function UsersTabelToolbar({ selectedUsers = [], refresh }) {
               <IconButton
                 onClick={deleteSelectedUsers}
                 size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
                 color="inherit"
               >
                 <DeleteIcon />

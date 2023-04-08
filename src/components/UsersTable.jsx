@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,19 +8,26 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import UsersTabelToolbar from "./UsersTabelToolbar";
+import { UsersContext } from "./UsersProvider";
+import { Alert } from "@mui/material";
 
-export default function UsersTable({ users, refresh }) {
-  const columns = [
-    { name: "Name", field: "fullName" },
-    { name: "Email", field: "email" },
-    { name: "Phone number", field: "phoneNumber" },
-    { name: "Country", field: "country" },
-    { name: "Role", field: "role" },
-    { name: "Registered At", field: "createdAt" },
-  ];
+const USERS_TABLE_COLUMNS = [
+  { name: "Name", field: "fullName" },
+  { name: "Email", field: "email" },
+  { name: "Phone number", field: "phoneNumber" },
+  { name: "Country", field: "country" },
+  { name: "Role", field: "role" },
+  { name: "Registered At", field: "createdAt" },
+];
+
+export default function UsersTable() {
+  const { users, error } = useContext(UsersContext);
 
   const [selectedUsers, setSelectedUsers] = useState([]);
-  //const isSelected = (id) => selectedUsers.indexOf(id) !== -1;
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>;
+  }
 
   if (!users.length) {
     return null;
@@ -28,7 +35,7 @@ export default function UsersTable({ users, refresh }) {
 
   return (
     <>
-      <UsersTabelToolbar selectedUsers={selectedUsers} refresh={refresh} />
+      <UsersTabelToolbar selectedUsers={selectedUsers} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -44,12 +51,9 @@ export default function UsersTable({ users, refresh }) {
                     }
                   }}
                   color="primary"
-                  inputProps={{
-                    "aria-label": "select all desserts",
-                  }}
                 />
               </TableCell>
-              {columns.map((column) => (
+              {USERS_TABLE_COLUMNS.map((column) => (
                 <TableCell key={column.name}>{column.name}</TableCell>
               ))}
             </TableRow>
@@ -75,12 +79,9 @@ export default function UsersTable({ users, refresh }) {
                       }
                     }}
                     color="primary"
-                    inputProps={{
-                      "aria-label": "select all desserts",
-                    }}
                   />
                 </TableCell>
-                {columns.map((column) => (
+                {USERS_TABLE_COLUMNS.map((column) => (
                   <TableCell key={`${user.id}-${column.name}`}>
                     {user[column.field]}
                   </TableCell>
